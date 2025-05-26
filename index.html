@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mi Vieja Hermosa UD</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f0ff;
+      color: #333;
+    }
+    header, footer {
+      background-color: #e4d4f7;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      color: #7c4db3;
+    }
+    header p {
+      font-style: italic;
+      color: #5e3c91;
+      margin-top: 0.5rem;
+    }
+    nav {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: #7c4db3;
+      margin: 0 1rem;
+      font-weight: bold;
+    }
+    .fotos-principales {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .media {
+      width: 350px;
+      height: 260px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      background-color: #e4d4f7;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .media img,
+    .media video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .rotar img {
+      transform: rotate(270deg) scale(1.4);
+      transform-origin: center;
+    }
+    .page-info {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #7c4db3;
+      margin-top: 1.5rem;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #e4d4f7;
+      color: #5e3c91;
+      font-size: 0.9rem;
+    }
+    .lightbox {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      position: fixed;
+      z-index: 1000;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .lightbox.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .lightbox img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      animation: zoomIn 0.3s ease forwards;
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeScaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.98) translateY(15px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    .music-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      z-index: 1001;
+    }
+    .music-toggle button {
+      padding: 0.4rem 0.8rem;
+      background-color: #7c4db3;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="index.html" style="text-decoration: none; color: #7c4db3;">Mi </a></h1>
+    <p>(IDK luego se me ocurrira algo)</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="galeria.html">Galería</a>
+    <a href="biografia.html">Biografía</a>
+  </nav>
+
+  <audio id="background-music" autoplay loop>
+    <source src="Galeria/Cigarettes out the Window.mp3" type="audio/mpeg">
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+<div class="music-toggle">
+  <button onclick="toggleMusic()">Desactivar música</button>
+</div>
+
+
+  <section class="fotos-principales">
+    <div class="media">
+      <img src="Galeria/IMG-20250328-WA0008.jpg" alt="Foto 1" />
+    </div>
+    <div class="media">
+      <video controls>
+        <source src="Galeria/VID-20250228-WA0027.mp4" type="video/mp4" />
+        xD.
+      </video>
+    </div>
+    <div class="media">
+      <img src="Galeria/IMG-20250223-WA0027.jpg" alt="Foto 2" />
+    </div>
+  </section>
+
+  <div class="page-info">
+    <p>Página Principal</p>
+  </div>
+
+  <footer>Hecho por mi</footer>
+
+  <div class="lightbox" id="lightbox">
+    <img src="" alt="Imagen ampliada" id="lightbox-img">
+  </div>
+
+  <script>
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    document.querySelectorAll('.media img').forEach(img => {
+      img.addEventListener('click', () => {
+        lightboxImg.src = img.src;
+        lightbox.classList.add('active');
+      });
+    });
+    lightbox.addEventListener('click', () => {
+      lightbox.classList.remove('active');
+    });
+
+    const audio = document.getElementById('background-music');
+    const button = document.querySelector('.music-toggle button');
+    let musicPlaying = true;
+
+    function toggleMusic() {
+      if (musicPlaying) {
+        audio.pause();
+        button.textContent = "Activar música";
+      } else {
+        audio.play();
+        button.textContent = "Desactivar música";
+      }
+      musicPlaying = !musicPlaying;
+    }
+
+    document.addEventListener('click', () => {
+      if (!musicPlaying && audio.paused) {
+        audio.play();
+        musicPlaying = true;
+        button.textContent = "Desactivar música";
+      }
+    }, { once: true });
+  </script>
+</body>
+</html>
